@@ -1,16 +1,26 @@
-import express from 'express'
-import ViteExpress from 'vite-express'
+import express from "express";
+import ViteExpress from "vite-express";
 
-const app = express()
+const app = express();
 ViteExpress.config({ printViteDevServerHost: true });
 
-app.use(express.urlencoded({extended: false}))
-app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // ENDPOINTS GO HERE
-app.get('/', (req, res) => {
-    res.sendFile("src/index.html", {root: '.'})
-})
+app.get("/", (req, res) => {
+  res.sendFile("src/index.html", { root: "." });
+});
 
+app.post("/order-cookies", (req, res) => {
+  const { quantity, cookieType } = req.body;
 
-ViteExpress.listen(app, 2319, () => console.log('Server running at http://localhost:2319'))
+  res.status(200).send({
+    message: `Order of ${quantity} ${cookieType} confirmed!`,
+    total: quantity * 1.5,
+  });
+});
+
+ViteExpress.listen(app, 2319, () =>
+  console.log("Server running at http://localhost:2319")
+);
